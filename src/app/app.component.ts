@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Cookbook';
+  view = 'recipes';
+
+  changeView(type: string) {
+    this.view = type;
+  }
 }
