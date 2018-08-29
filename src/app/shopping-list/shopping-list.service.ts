@@ -24,9 +24,9 @@ export class ShoppingListService {
           ingredObj.amount += ingredient.amount;
           return true;
         }
-      })
+      });
       if (!isAlreadyListed) this.ingredients.push(new Ingredients(ingredient.name, ingredient.amount));
-      //fixes bug in initial recipe detail, removes reference from recipes.ingredients[]
+      //fixes bug in initial recipe detail, removes reference from original recipes.ingredients[]
     });
 
     this.ingredientsChanged.emit(this.ingredients.slice());
