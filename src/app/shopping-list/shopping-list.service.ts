@@ -1,16 +1,17 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Ingredients } from '../shared/ingredients.model';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShoppingListService {
-  ingredientsChanged = new EventEmitter<Ingredients[]>();
+  ingredientsChanged = new Subject<Ingredients[]>();
   private ingredients: Ingredients[] = [new Ingredients('Cherrys', 10), new Ingredients('Apples', 2)];
 
   addToIngredients(ingredient: Ingredients) {
     this.ingredients.push(ingredient);
-    this.ingredientsChanged.emit(this.ingredients);
+    this.ingredientsChanged.next(this.ingredients);
   }
 
   getIngredients() {
@@ -29,7 +30,7 @@ export class ShoppingListService {
       //fixes bug in initial recipe detail, removes reference from original recipes.ingredients[]
     });
 
-    this.ingredientsChanged.emit(this.ingredients.slice());
+    this.ingredientsChanged.next(this.ingredients.slice());
   }
 
 }
