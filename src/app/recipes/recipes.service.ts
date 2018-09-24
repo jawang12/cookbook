@@ -4,7 +4,9 @@ import { Ingredients } from '../shared/ingredients.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Subject } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 
 export class RecipesService {
   updateRecipes: Subject<Recipe[]> = new Subject<Recipe[]>();
@@ -34,6 +36,11 @@ export class RecipesService {
 
   updateRecipe(index: number, recipe: Recipe) {
     this.recipes[index] = recipe;
+    this.updateRecipes.next(this.recipes.slice());
+  }
+
+  deleteRecipe(index: number) {
+    this.recipes.splice(index, 1);
     this.updateRecipes.next(this.recipes.slice());
   }
 

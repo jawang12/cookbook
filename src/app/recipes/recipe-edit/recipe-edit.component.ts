@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { RecipesService } from '../recipes.service';
 import { Recipe } from '../recipe.model';
@@ -15,7 +15,7 @@ export class RecipeEditComponent implements OnInit {
   enableEdit = false;
   myReactiveForm: FormGroup;
 
-  constructor(private route: ActivatedRoute, private recipesService: RecipesService) {}
+  constructor(private route: ActivatedRoute, private recipesService: RecipesService, private router: Router) {}
 
   ngOnInit() {
     this.route.params.subscribe((updatedParams: Params) => {
@@ -57,13 +57,27 @@ export class RecipeEditComponent implements OnInit {
 
   onSubmit() {
     const { name, imgUrl, description, ingredients } = this.myReactiveForm.value;
+
     if (this.enableEdit) {
       this.recipesService.updateRecipe(this.id, new Recipe(name, description, imgUrl, ingredients));
     } else {
       this.recipesService.addRecipe(new Recipe(name, description, imgUrl, ingredients));
     }
-    console.log('pressed', this.myReactiveForm)
-    console.log(this.recipesService.getSingleRecipe(this.id));
+
+    if (this.enableEdit) {
+      this.router.navigate(['../'], { relativeTo: this.route });
+    } else {
+      const recipesTotal = this.recipesService.getRecipes().length;
+      this.router.navigate([`../${recipesTotal - 1}`], { relativeTo: this.route });
+    }
+  }
+
+  onCancel() {
+    if (this.enableEdit) {
+      this.router.navigate([`/recipes/${this.id}`]);
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   onAddIngredient() {
@@ -71,5 +85,9 @@ export class RecipeEditComponent implements OnInit {
       name: new FormControl(null, Validators.required),
       amount: new FormControl(null, [Validators.required, Validators.pattern(/^[1-9][0-9]*$/)])
     }));
+  }
+
+  onRemoveIngredient(index: number) {
+    (<FormArray>this.myReactiveForm.get('ingredients')).removeAt(index);
   }
 }
