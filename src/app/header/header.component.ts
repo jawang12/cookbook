@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { ServerService } from '../server.service';
+import { RecipesService } from '../recipes/recipes.service';
+import { Recipe } from '../recipes/recipe.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -7,5 +11,21 @@ import { Component } from '@angular/core';
 })
 
 export class HeaderComponent {
+
+  constructor(private serverService: ServerService, private recipesService: RecipesService, private router: Router) {}
+
+  onSave() {
+    this.serverService.saveRecipes(this.recipesService.getRecipes()).subscribe((response) => {
+      console.log(response.json());
+    }, (error) => console.log(error));
+  }
+
+  onFetch() {
+    this.serverService.fetchRecipes().subscribe((recipes: Recipe[]) => {
+      const recipeDetail = this.router.routerState.snapshot.url.slice(1).split('/');
+      this.recipesService.setRecipes(recipes, recipeDetail[0] === 'recipes' && recipeDetail.length === 2);
+    },
+    (error) => console.log(error));
+  }
 
 }
