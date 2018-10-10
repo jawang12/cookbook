@@ -19,7 +19,8 @@ export class ServerService {
   fetchRecipes() {
     return this.http.get('https://ng-cookbook1.firebaseio.com/recipes.json')
     .pipe(map((response: Response) => {
-      const recipes = response.json();
+      // map transforms entire response and returns the observable
+      const recipes: Recipe[] = response.json();
       return recipes.map(recipe => {
         if (!(recipe.ingredients)) {
           recipe.ingredients = [];
