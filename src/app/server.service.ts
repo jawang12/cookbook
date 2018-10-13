@@ -3,6 +3,7 @@ import { Recipe } from './recipes/recipe.model';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Response } from '@angular/http';
+import { AuthService } from './auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,16 @@ import { Response } from '@angular/http';
 
 export class ServerService {
 
-  constructor(private http: Http) {}
+  constructor(private http: Http, private auth: AuthService) {}
 
   saveRecipes(recipes: Recipe[]) {
-    return this.http.put('https://ng-cookbook1.firebaseio.com/recipes.json', recipes);
+    const token = this.auth.getToken();
+    return this.http.put('https://ng-cookbook1.firebaseio.com/recipes.json/?auth=' + token, recipes);
   }
 
   fetchRecipes() {
-    return this.http.get('https://ng-cookbook1.firebaseio.com/recipes.json')
+    const token = this.auth.getToken();
+    return this.http.get('https://ng-cookbook1.firebaseio.com/recipes.json/?auth=' + token)
     .pipe(map((response: Response) => {
       // map transforms entire response and returns the observable
       const recipes: Recipe[] = response.json();

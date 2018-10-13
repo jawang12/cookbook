@@ -3,6 +3,7 @@ import { ServerService } from '../server.service';
 import { RecipesService } from '../recipes/recipes.service';
 import { Recipe } from '../recipes/recipe.model';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +13,10 @@ import { Router } from '@angular/router';
 
 export class HeaderComponent {
 
-  constructor(private serverService: ServerService, private recipesService: RecipesService, private router: Router) {}
+  constructor(private serverService: ServerService,
+              private recipesService: RecipesService,
+              private router: Router,
+              private auth: AuthService) {}
 
   onSave() {
     this.serverService.saveRecipes(this.recipesService.getRecipes()).subscribe((response) => {
@@ -26,6 +30,10 @@ export class HeaderComponent {
       this.recipesService.setRecipes(recipes, recipeDetail[0] === 'recipes' && recipeDetail.length === 2);
     },
     (error) => console.log(error));
+  }
+
+  onLogout() {
+    this.auth.logout();
   }
 
 }
