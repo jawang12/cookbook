@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ServerService } from '../server.service';
-import { RecipesService } from '../recipes/recipes.service';
-import { Recipe } from '../recipes/recipe.model';
+import { ServerService } from '../../server.service';
+import { RecipesService } from '../../recipes/recipes.service';
+import { Recipe } from '../../recipes/recipe.model';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-header',
