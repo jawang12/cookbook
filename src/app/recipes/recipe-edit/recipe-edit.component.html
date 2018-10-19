@@ -48,7 +48,7 @@
         <div class="col-xs-12" formArrayName="ingredients">
           <div
             class="row"
-            *ngFor="let ingredControl of myReactiveForm.get('ingredients').controls; let i = index"
+            *ngFor="let ingredientsControl of getControls(); let i = index"
             [formGroupName]="i"
             style="margin-top: 10px">
             <div class="col-xs-8">

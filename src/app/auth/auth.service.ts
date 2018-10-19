@@ -46,7 +46,7 @@ export class AuthService {
     return Boolean(this.token);
   }
 
-  checkAndLoadUser() {
+  checkAndLoadUser() { //persistence
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) this.token = null;
       else {

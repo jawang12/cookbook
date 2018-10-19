@@ -86,4 +86,8 @@ export class RecipeEditComponent implements OnInit {
   onRemoveIngredient(index: number) {
     (<FormArray>this.myReactiveForm.get('ingredients')).removeAt(index);
   }
+
+  getControls() {
+    return (<FormArray>this.myReactiveForm.get('ingredients')).controls;
+  }
 }
