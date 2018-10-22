@@ -67,8 +67,7 @@ export class AuthService {
   deleteUser() {
     firebase.auth().currentUser.delete()
     .then(value => {
-      console.log('value', value)
-      this.router.navigate(['/'])
+      this.router.navigate(['/']);
     })
     .catch(error => console.error(error));
   }
