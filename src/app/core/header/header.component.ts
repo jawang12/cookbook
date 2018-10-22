@@ -40,4 +40,11 @@ export class HeaderComponent {
     return this.auth.isAuthenticated();
   }
 
+  onDeleteAccount() {
+    const confirmed = confirm('Are you sure you want to delete this account?');
+    if (confirmed) {
+      this.auth.deleteUser();
+    }
+  }
+
 }

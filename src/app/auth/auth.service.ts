@@ -15,7 +15,7 @@ export class AuthService {
   onSignup(email: string, password: string) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(credentials => {
-      console.log(credentials);
+      this.router.navigate(['/', 'recipes']);
     })
     .catch(error => console.error(error));
   }
@@ -62,5 +62,14 @@ export class AuthService {
     firebase.auth().signOut();
     this.token = null;
     this.router.navigate(['/']);
+  }
+
+  deleteUser() {
+    firebase.auth().currentUser.delete()
+    .then(value => {
+      console.log('value', value)
+      this.router.navigate(['/'])
+    })
+    .catch(error => console.error(error));
   }
 }
