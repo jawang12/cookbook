@@ -36,7 +36,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   onClickDelete() {
     this.recipesService.deleteRecipe(+this.route.snapshot.params.id);
-    this.router.navigate(['/']);
+    this.router.navigate(['/', 'recipes']);
   }
 
 }

@@ -4,6 +4,7 @@ import { RecipesService } from '../../recipes/recipes.service';
 import { Recipe } from '../../recipes/recipe.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
+import { HttpEvent } from '@angular/common/http';
 
 @Component({
   selector: 'app-header',
@@ -19,8 +20,8 @@ export class HeaderComponent {
               private auth: AuthService) {}
 
   onSave() {
-    this.serverService.saveRecipes(this.recipesService.getRecipes()).subscribe((response) => {
-      console.log(response.json());
+    this.serverService.saveRecipes(this.recipesService.getRecipes()).subscribe((status: HttpEvent<Object>) => {
+      console.log(status,'on save log');
     }, (error) => console.log(error));
   }
 
