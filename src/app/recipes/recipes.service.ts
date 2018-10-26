@@ -1,8 +1,9 @@
 import { Recipe } from './recipe.model';
 import { Injectable } from '@angular/core';
 import { Ingredients } from '../shared/ingredients.model';
-import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AddIngredients } from '../store/shopping-list/shopping-list.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class RecipesService {
   new Recipe('Jerk Chicken', 'Watch out for the kick!', 'https://assets.bonappetit.com/photos/58ef9d65f9ef2707d8e770b3/16:9/w_1200,c_limit/miss-ollies-jerk-chicken.jpg', [new Ingredients('All Natural Grass Fed Chicken Breasts', 5), new Ingredients('Allspice', 1), new Ingredients('Thyme', 3)] )
   ];
 
-  constructor(private slService: ShoppingListService) {}
+  constructor(private store: Store<{ shoppingList: { ingredients: Ingredients[] } }>) {}
 
   getRecipes() {
     return this.recipes.slice();
@@ -27,7 +28,7 @@ export class RecipesService {
   }
 
   addMultipleIngredients(ingredients: Ingredients[]) {
-    this.slService.addMultipleIngredients(ingredients);
+    this.store.dispatch(new AddIngredients(ingredients));
   }
 
   addRecipe(recipe: Recipe) {
