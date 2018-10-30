@@ -4,6 +4,7 @@ import { Ingredients } from '../shared/ingredients.model';
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AddIngredients } from '../store/shopping-list/shopping-list.actions';
+import * as fromApp from '../store/app.reducer';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class RecipesService {
   new Recipe('Jerk Chicken', 'Watch out for the kick!', 'https://assets.bonappetit.com/photos/58ef9d65f9ef2707d8e770b3/16:9/w_1200,c_limit/miss-ollies-jerk-chicken.jpg', [new Ingredients('All Natural Grass Fed Chicken Breasts', 5), new Ingredients('Allspice', 1), new Ingredients('Thyme', 3)] )
   ];
 
-  constructor(private store: Store<{ shoppingList: { ingredients: Ingredients[] } }>) {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
   getRecipes() {
     return this.recipes.slice();
@@ -50,6 +51,7 @@ export class RecipesService {
     this.recipes = recipes;
     this.updateRecipes.next(this.recipes.slice());
     if (hasDetails) {
+      //ensures current recipe also changes dynamically
       this.updateCurrentRecipe.next();
     }
   }

@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServerService } from '../../server.service';
 import { RecipesService } from '../../recipes/recipes.service';
+import { AuthService } from '../../auth/auth.service';
 import { Recipe } from '../../recipes/recipe.model';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth/auth.service';
 import { HttpEvent } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import * as fromApp from '../../store/app.reducer';
+import * as authActions from '../../store/auth/auth.actions';
+import * as fromAuth from '../../store/auth/auth.reducer';
 
 @Component({
   selector: 'app-header',
@@ -12,12 +17,19 @@ import { HttpEvent } from '@angular/common/http';
   styleUrls: ['./header.component.css']
 })
 
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+
+  authState: Observable<fromAuth.AuthState>;
 
   constructor(private serverService: ServerService,
               private recipesService: RecipesService,
               private router: Router,
+              private store: Store<fromApp.AppState>,
               private auth: AuthService) {}
+
+  ngOnInit() {
+    this.authState = this.store.select('auth');
+  }
 
   onSave() {
     this.serverService.saveRecipes(this.recipesService.getRecipes()).subscribe((status: HttpEvent<Object>) => {
@@ -37,15 +49,11 @@ export class HeaderComponent {
     this.auth.logout();
   }
 
-  isAuthenticated() {
-    return this.auth.isAuthenticated();
-  }
-
-  onDeleteAccount() {
-    const confirmed = confirm('Are you sure you want to delete this account?');
-    if (confirmed) {
-      this.auth.deleteUser();
-    }
-  }
+  // onDeleteAccount() {
+  //   const confirmed = confirm('Are you sure you want to delete this account?');
+  //   if (confirmed) {
+  //     this.auth.deleteUser();
+  //   }
+  // }
 
 }

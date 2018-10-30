@@ -3,7 +3,6 @@ import { Recipe } from './recipes/recipe.model';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Response } from '@angular/http';
-import { AuthService } from './auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,7 @@ import { AuthService } from './auth/auth.service';
 
 export class ServerService {
 
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient) {}
 
   saveRecipes(recipes: Recipe[]) {
     const req = new HttpRequest('PUT', 'https://ng-cookbook1.firebaseio.com/recipes.json', recipes, {
@@ -21,10 +20,7 @@ export class ServerService {
   }
 
   fetchRecipes() {
-    const token = this.auth.getToken();
-    return this.http.get<Recipe[]>('https://ng-cookbook1.firebaseio.com/recipes.json', {
-      params: new HttpParams().set('auth', token)
-    })
+    return this.http.get<Recipe[]>('https://ng-cookbook1.firebaseio.com/recipes.json')
     .pipe(map(recipes => {
       // httpClient by default extracts response body and converts it to json
       // map transforms entire response and returns the observable;
@@ -39,3 +35,7 @@ export class ServerService {
     }));
   }
 }
+
+// return this.http.get<Recipe[]>('https://ng-cookbook1.firebaseio.com/recipes.json', {
+//   params: new HttpParams().set('auth', token)
+// })

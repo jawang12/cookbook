@@ -4,10 +4,6 @@ import {
 } from './shopping-list.actions';
 import { Ingredients } from '../../shared/ingredients.model';
 
-export interface AppState {
-  shoppingList: ShoppingListState
-}
-
 export interface ShoppingListState {
   ingredients: Ingredients[],
   editIndex: number,

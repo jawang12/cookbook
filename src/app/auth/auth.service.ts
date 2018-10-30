@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../store/app.reducer';
+import * as authActions from '../store/auth/auth.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -8,14 +11,17 @@ import { Router } from '@angular/router';
 
 export class AuthService {
 
-  constructor(private router: Router) {}
-
-  token: string;
+  constructor(private router: Router, private store: Store<fromApp.AppState>) {}
 
   onSignup(email: string, password: string) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(credentials => {
-      this.router.navigate(['/', 'recipes']);
+      this.store.dispatch(new authActions.SignUp());
+      firebase.auth().currentUser.getIdToken()
+      .then(storageToken => {
+        this.store.dispatch(new authActions.SetToken(storageToken));
+        this.router.navigate(['/', 'recipes']);
+      })
     })
     .catch(error => console.error(error));
   }
@@ -23,36 +29,23 @@ export class AuthService {
   onSignin(email: string, password: string) {
     firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {
-      this.router.navigate(['/']);
+      this.store.dispatch(new authActions.SignIn());
       firebase.auth().currentUser.getIdToken()
       .then((storageToken => {
-        this.token = storageToken;
+        this.store.dispatch(new authActions.SetToken(storageToken));
+        this.router.navigate(['/']);
       }))
     })
     .catch(error => console.error(error));
   }
 
-  getToken() {
-    firebase.auth().currentUser.getIdToken()
-    .then(currentToken => {
-      this.token = currentToken;
-    })
-    .catch(error => console.error(error));
-    //makes sure token is still valid if not renews it
-    return this.token;
-  }
-
-  isAuthenticated() {
-    return Boolean(this.token);
-  }
-
   checkAndLoadUser() { //persistence
     firebase.auth().onAuthStateChanged((user) => {
-      if (!user) this.token = null;
-      else {
+      if (user) {
+        console.log('success user', user);
         user.getIdToken()
         .then((currentToken: string) => {
-          this.token = currentToken;
+          this.store.dispatch(new authActions.PersistedSignIn(currentToken));
         })
       }
     });
@@ -60,15 +53,13 @@ export class AuthService {
 
   logout() {
     firebase.auth().signOut();
-    this.token = null;
+    this.store.dispatch(new authActions.Logout());
     this.router.navigate(['/']);
   }
 
   deleteUser() {
-    firebase.auth().currentUser.delete()
-    .then(value => {
-      this.router.navigate(['/']);
-    })
-    .catch(error => console.error(error));
+    firebase.auth().currentUser.delete();
+    this.store.dispatch(new authActions.DeleteUser());
+    this.router.navigate(['/']);
   }
 }
