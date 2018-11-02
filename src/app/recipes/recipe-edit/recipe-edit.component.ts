@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-import { RecipesService } from '../recipes.service';
 import { Recipe } from '../recipe.model';
 import { Ingredients } from '../../shared/ingredients.model';
 import { Store } from '@ngrx/store';
@@ -54,13 +53,13 @@ export class RecipeEditComponent implements OnInit {
           });
         }
         this.createForm(name, imgUrl, description, ingredients);
-      })
+      });
     } else {
       this.createForm(name, imgUrl, description, ingredients);
     }
   }
 
-  private createForm(name, imgUrl, description, ingredients) {
+  private createForm(name: string, imgUrl: string, description: string, ingredients: FormArray) {
     this.myReactiveForm = new FormGroup({
       'name': new FormControl(name, Validators.required),
       'imgUrl': new FormControl(imgUrl, Validators.required),
