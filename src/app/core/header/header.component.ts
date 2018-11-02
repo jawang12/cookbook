@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ServerService } from '../../server.service';
 import { RecipesService } from '../../recipes/recipes.service';
-import { AuthService } from '../../auth/auth.service';
 import { Recipe } from '../../recipes/recipe.model';
 import { Router } from '@angular/router';
 import { HttpEvent } from '@angular/common/http';
@@ -24,9 +23,7 @@ export class HeaderComponent implements OnInit {
   constructor(private serverService: ServerService,
               private recipesService: RecipesService,
               private router: Router,
-              private store: Store<fromApp.AppState>,
-              private auth: AuthService) {}
-
+              private store: Store<fromApp.AppState>) {}
   ngOnInit() {
     this.authState = this.store.select('auth');
   }
@@ -46,14 +43,14 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
-    this.auth.logout();
+    this.store.dispatch(new authActions.Logout());
   }
 
-  // onDeleteAccount() {
-  //   const confirmed = confirm('Are you sure you want to delete this account?');
-  //   if (confirmed) {
-  //     this.auth.deleteUser();
-  //   }
-  // }
+  onDeleteAccount() {
+    const confirmed = confirm('Are you sure you want to delete this account?');
+    if (confirmed) {
+      this.store.dispatch(new authActions.DeleteUser());
+    }
+  }
 
 }

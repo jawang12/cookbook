@@ -21,5 +21,8 @@ export class ShoppingListComponent implements OnInit {
 
   onEdit(index: number) {
     this.store.dispatch(new EnterEditMode(index));
+    /*
+    action is fired to reducer which indicates a change is being made to the state. Any subscriptions to this part of the state will now be fired (i.e shopping-edit.component)
+    */
   }
 }

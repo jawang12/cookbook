@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-xs-12">
-    <img src="{{ currentRecipe.imgUrl }}" alt="{{ currentRecipe.name}}" class="img-responsive">
+    <img [src]="(currentRecipe | async).imgUrl " alt="{{ (currentRecipe | async).name }}" class="img-responsive">
   </div>
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <h1>Recipe Name: {{ currentRecipe.name }}</h1>
+    <h1>Recipe Name: {{ (currentRecipe | async).name }}</h1>
   </div>
 </div>
 <div class="row">
@@ -17,7 +17,7 @@
         Manage Recipe <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
-        <li><a (click)="addToShoppingList(currentRecipe.ingredients)">Add to List</a></li>
+        <li><a (click)="addToShoppingList()">Add to List</a></li>
         <li><a routerLink="edit">Edit Recipe</a></li>
         <li><a (click)="onClickDelete()">Delete Recipe</a></li>
       </ul>
@@ -26,13 +26,13 @@
 </div>
 <div class="row">
   <div class="col-xs-12">
-    Description: {{ currentRecipe.description }}
+    Description: {{ (currentRecipe | async).description }}
   </div>
 </div>
 <div class="row">
   <div class="col-xs-12">
     <ul class="list-group">
-      <li class="list-group-item" *ngFor="let ingredient of currentRecipe.ingredients">
+      <li class="list-group-item" *ngFor="let ingredient of (currentRecipe | async).ingredients">
         {{ ingredient.name }} - {{ ingredient.amount }}
       </li>
     </ul>

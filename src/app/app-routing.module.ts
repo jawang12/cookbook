@@ -9,11 +9,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'recipes',
-    loadChildren: './recipes/recipes.module#RecipesModule' //lazy load
-  },
-  {
-    path: 'shoppinglist',
-    loadChildren: './shopping-list/shopping-list.module#ShoppingListModule'
+    loadChildren: './recipes/recipes.module#RecipesModule' //lazy load; since app-routing is lazy loading this module, we do not need to add it to any imports
   },
   {
     path: '**',

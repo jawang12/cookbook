@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as firebase from 'firebase';
-import { AuthService } from './auth/auth.service';
+import { Store } from '@ngrx/store';
+import * as authActions from './store/auth/auth.actions';
+import * as fromApp from './store/app.reducer';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +11,7 @@ import { AuthService } from './auth/auth.service';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private auth: AuthService) {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
   ngOnInit() {
     firebase.initializeApp({
@@ -17,6 +19,10 @@ export class AppComponent implements OnInit {
       authDomain: "ng-cookbook1.firebaseapp.com",
     })
 
-    this.auth.checkAndLoadUser();
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.store.dispatch(new authActions.UserReentry(user));
+      }
+    });
   }
 }

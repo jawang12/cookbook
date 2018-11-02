@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgForm, NgModel } from '@angular/forms';
-import { AuthService } from '../auth.service';
+import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../../store/app.reducer';
+import * as authActions from '../../store/auth/auth.actions';
 
 @Component({
   selector: 'app-signup',
@@ -10,14 +12,13 @@ import { AuthService } from '../auth.service';
 
 export class SignupComponent {
   @ViewChild('signupForm') form: NgForm;
-  @ViewChild('password') password: NgModel;
 
-  constructor(private auth: AuthService) {}
+  constructor(private store: Store<fromApp.AppState>) {}
 
   onSignup() {
-    const email = this.form.controls.email.value;
+    const username = this.form.controls.email.value;
     const password = this.form.controls.password.value;
 
-    this.auth.onSignup(email, password);
+    this.store.dispatch(new authActions.SignUpAttempt({ username, password }));
   }
 }
