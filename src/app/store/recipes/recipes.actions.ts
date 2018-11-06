@@ -5,7 +5,9 @@ export enum RecipeActionTypes {
   ADD_RECIPE = 'ADD_RECIPE',
   UPDATE_RECIPE = 'UPDATE_RECIPE',
   DELETE_RECIPE = 'DELETE_RECIPE',
-  SET_RECIPES = 'SET_RECIPES'
+  SET_RECIPES = 'SET_RECIPES',
+  LOAD_RECIPES = 'LOAD_RECIPES',
+  SAVE_RECIPES = 'SAVE_RECIPES'
 }
 
 export class AddRecipe implements Action {
@@ -26,6 +28,14 @@ export class DeleteRecipe implements Action {
 export class SetRecipes implements Action {
   readonly type = RecipeActionTypes.SET_RECIPES;
   constructor(public recipes: Recipe[]) {}
+}
+
+export class LoadRecipes implements Action {
+  readonly type = RecipeActionTypes.LOAD_RECIPES;
+}
+
+export class SaveRecipes implements Action {
+  readonly type = RecipeActionTypes.SAVE_RECIPES;
 }
 
 export type RecipeActions =

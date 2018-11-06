@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../recipe.model';
-import { Ingredients } from '../../shared/ingredients.model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import * as fromRecipes from '../../store/recipes/recipes.reducer';
@@ -27,15 +26,7 @@ export class RecipeDetailComponent implements OnInit {
          return recipesState.recipes[+updatedParams.id];
       }));
     });
-
-    // this.currentRecipeSubscription = this.recipesService.updateCurrentRecipe.subscribe(() => {
-    //   this.currentRecipe = this.recipesService.getSingleRecipe(+this.route.snapshot.params.id);
-    // })
   }
-
-  // ngOnDestroy() {
-  //   this.currentRecipeSubscription.unsubscribe();
-  // }
 
   addToShoppingList() {
     this.currentRecipe.pipe(take(1)).subscribe((recipe: Recipe) => {
