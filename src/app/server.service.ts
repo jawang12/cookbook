@@ -31,7 +31,7 @@ export class ServerService {
           //case of no ingredients, firebase removes ingredients prop completely
         }
         return recipe;
-      })
+      });
     }));
   }
 }

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { map, switchMap, catchError, take, withLatestFrom, tap } from 'rxjs/operators';
 import { throwError} from 'rxjs';
-import* as recipesActions from './recipes.actions';
+import * as recipesActions from './recipes.actions';
 import * as fromRecipes from './recipes.reducer';
 import { Recipe } from '../../recipes/recipe.model';
 import { Store } from '@ngrx/store';
@@ -21,7 +21,7 @@ export class RecipeEffects {
   loadRecipesFromServer = this.actions$
   .ofType(recipesActions.RecipeActionTypes.LOAD_RECIPES)
   .pipe(switchMap(() => {
-    return this.http.get<Recipe[]>('https://ng-cookbook1.firebaseio.com/recipes.json')
+    return this.http.get<Recipe[]>('https://ng-cookbook1.firebaseio.com/recipes.json');
   }),
   map((recipes) => {
     for (let recipe of recipes) { //recipes is an iterable
@@ -57,5 +57,4 @@ export class RecipeEffects {
     const totalRecipes = recipesState.recipes.length;
     this.router.navigate([`/`, `recipes`, totalRecipes - 1]);
   }));
-
 }
