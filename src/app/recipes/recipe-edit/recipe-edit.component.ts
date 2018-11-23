@@ -75,7 +75,7 @@ export class RecipeEditComponent implements OnInit {
 
     if (this.enableEdit) {
       this.store.dispatch(new recipesActions.UpdateRecipe(this.id, new Recipe(name, description, imgUrl, ingredients)));
-      this.router.navigate(['../'], { relativeTo: this.route });
+      // this.router.navigate(['../'], { relativeTo: this.route });
     } else {
       this.store.dispatch(new recipesActions.AddRecipe(new Recipe(name, description, imgUrl, ingredients)));
       // const recipesTotal = this.recipesService.getRecipes().length;

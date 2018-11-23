@@ -29,7 +29,7 @@
           minlength="6"
           >
       </div>
-      <span *ngIf="!password.value || (password.value && password.value.length < 6)">Note: Password must be at least 6 characters.</span>
+      <span *ngIf="password.value?.length < 6">Note: Password must be at least 6 characters.</span>
       <button type="submit" class="btn btn-primary signup" [disabled]="!signupForm.valid">Submit</button>
     </form>
   </div>

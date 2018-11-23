@@ -57,4 +57,14 @@ export class RecipeEffects {
     const totalRecipes = recipesState.recipes.length;
     this.router.navigate([`/`, `recipes`, totalRecipes - 1]);
   }));
+
+  @Effect({ dispatch: false })
+  redirectToUpdatedRecipe = this.actions$
+  .ofType(recipesActions.RecipeActionTypes.UPDATE_RECIPE)
+  .pipe(tap((action: recipesActions.UpdateRecipe) => {
+    this.router.navigate(['/', 'recipes', action.index]);
+  }),
+  catchError(error => {
+    return throwError('error redirecting back to updated recipe ' + error);
+  }));
 }
